@@ -32,7 +32,7 @@ namespace CSCTask8.Controllers
 
             try
             {
-                var client = new ClarifaiClient("928b664afc814dbf94801c78c408fa81");
+                var client = new ClarifaiClient("");
 
                 var response = await client.Predict<Concept>(
                     client.PublicModels.GeneralModel.ModelID,

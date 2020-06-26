@@ -17,7 +17,7 @@ namespace CSCTask8.Controllers
         [Route("api/googlevision")]
         public IHttpActionResult ImageToText()
         {
-            string credential_path = @"C:\Users\DKroz\Desktop\School\CSC\Keys\CSCAssignment-f9f0060c3694.json";
+            string credential_path = "";
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credential_path);
 
             var image = HttpContext.Current.Request.Files[0];

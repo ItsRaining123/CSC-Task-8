@@ -1,0 +1,100 @@
+﻿<body>
+    <div class="container">
+        <h1>Image Recognition (Clarifai and Google Vision)</h1>
+        <form>
+            <h2>Upload Image</h2>
+            <input id="photo" type="file" name="photo" />
+            <br />
+            <input id="submitPhoto" type="button" value="Upload to Clarifai" name="Predict" />
+            <div id="progress" style="display:none">
+                <img src="~/Image/ajax-loader.gif" />
+            </div>
+            <input id="submitImage" type="button" value="Image Recognition" name="ImageToText" />
+            <div id="progress2" style="display:none">
+                <img src="~/Image/ajax-loader.gif" />
+            </div>
+            <br />
+            <p id="prediction"></p>
+            <br />
+            <p id="errorMsg"></p>
+            <br />
+            <p id="imgToTextDesc"></p>
+            <br />
+            <p id="errorMsg2"></p>
+        </form>
+    </div>
+</body>
+
+@section scripts {
+    <script type="text/javascript">
+
+        
+        $(document).ready(function () {
+            $('#submitPhoto').click(function () {
+                var data = new FormData();
+
+                var imageFile = document.getElementById("photo").files[0];
+
+                data.append('photo', imageFile);
+
+                $.ajax({
+                    url: '/api/clarifai',
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    method: "POST",
+                    dataType: "json",
+                    beforeSend: function () {
+                        $("#progress").show();
+                    },
+                    complete: function () {
+                        $("#progress").hide();
+                    },
+                    success: function (result) {
+                        $('#prediction').text(result);
+                    },
+                    error: function () {
+                        if (imageFile == null) {
+                            $('#errorMsg').html("Please upload an image");
+                        } else {
+                            $("#errorMsg").html("Something went wrong");
+                        }
+                    }
+                });
+            });
+        });
+
+        $('#submitImage').click(function () {
+            var data = new FormData();
+
+            var imageFile = document.getElementById("photo").files[0];
+
+            data.append('photo', imageFile);
+
+            $.ajax({
+                url: '/api/googlevision',
+                processData: false,
+                contentType: false,
+                data: data,
+                method: "POST",
+                dataType: "json",
+                beforeSend: function () {
+                    $("#progress2").show();
+                },
+                complete: function () {
+                    $('#progress2').hide();
+                },
+                success: function (result) {
+                    $('#imgToTextDesc').text(result);
+                },
+                error: function () {
+                    if (imageFile == null) {
+                        $('#errorMsg2').html("Please upload an image");
+                    } else {
+                        $("#errorMsg2").html("Something went wrong");
+                    }
+                }
+            });
+        });
+    </script>
+}
